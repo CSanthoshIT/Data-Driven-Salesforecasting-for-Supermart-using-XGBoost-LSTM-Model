@@ -1,37 +1,39 @@
-🛒 Data-Driven Sales Forecasting for Supermart using XGBoost & LSTM Model
-This project aims to forecast Supermart's sales using a hybrid approach that combines the strengths of XGBoost (for feature-based modeling) and LSTM (for sequence learning). The predictive system is designed to help in inventory planning, marketing decisions, and demand forecasting.
+# 🛒 Data-Driven Sales Forecasting for Supermart using XGBoost & LSTM Model
 
-📌 Project Overview
-Sales forecasting is critical for supply chain efficiency and profitability. This project leverages both traditional machine learning and deep learning techniques:
+This project aims to forecast Supermart's sales using a hybrid approach that combines the strengths of **XGBoost** (for feature-based modeling) and **LSTM** (for sequence learning). The predictive system is designed to help in inventory planning, marketing decisions, and demand forecasting.
 
-XGBoost is used for feature-based learning (e.g., holidays, store type, promotions).
+---
 
-LSTM (Long Short-Term Memory) networks capture temporal dependencies and trends in sales data.
+## 📌 Project Overview
 
-Built using Python and developed in PyCharm IDE.
+Sales forecasting is critical for supply chain efficiency and profitability. This project leverages both **traditional machine learning** and **deep learning** techniques:
 
-🧠 Model Architecture
-1. XGBoost
-Gradient boosting algorithm to predict near-term sales using engineered features.
+- **XGBoost** is used for feature-based learning (e.g., holidays, store type, promotions).
+- **LSTM (Long Short-Term Memory)** networks capture temporal dependencies and trends in sales data.
+- Built using **Python** and developed in **PyCharm IDE**.
 
-Handles categorical and missing data well.
+---
 
-Used for modeling tabular, non-sequential aspects of the dataset.
+## 🧠 Model Architecture
 
-2. LSTM
-Recurrent neural network tailored for time series forecasting.
+### 1. XGBoost
+- Gradient boosting algorithm to predict near-term sales using engineered features.
+- Handles categorical and missing data well.
+- Used for modeling tabular, non-sequential aspects of the dataset.
 
-Captures temporal patterns in the sales data.
+### 2. LSTM
+- Recurrent neural network tailored for time series forecasting.
+- Captures temporal patterns in the sales data.
+- Used for learning long-term trends and seasonality.
 
-Used for learning long-term trends and seasonality.
+### 3. Hybrid Ensemble (Optional)
+- Combines both model predictions (e.g., averaging or weighted blending) to improve forecast accuracy.
 
-3. Hybrid Ensemble (Optional)
-Combines both model predictions (e.g., averaging or weighted blending) to improve forecast accuracy.
+---
 
-📂 Project Structure
-bash
-Copy
-Edit
+## 📂 Project Structure
+
+```
 Data-Driven-Salesforecasting-for-Supermart-using-XGBoost-LSTM-Model/
 │
 ├── data/                     # Raw and processed datasets
@@ -55,94 +57,100 @@ Data-Driven-Salesforecasting-for-Supermart-using-XGBoost-LSTM-Model/
 ├── requirements.txt          # Python dependencies
 │
 └── README.md                 # Project documentation
-📊 Features Used
-Date-based features (month, week, day, year)
+```
 
-Store information (type, location)
+---
 
-Promotion and discount flags
+## 📊 Features Used
 
-Rolling and lag sales metrics
+- Date-based features (month, week, day, year)
+- Store information (type, location)
+- Promotion and discount flags
+- Rolling and lag sales metrics
+- External factors (e.g., holidays, economic indicators - if available)
 
-External factors (e.g., holidays, economic indicators - if available)
+---
 
-🛠 Technologies Used
-Python 3.x
+## 🛠 Technologies Used
 
-Pandas, NumPy, Matplotlib, Seaborn
+- Python 3.x
+- Pandas, NumPy, Matplotlib, Seaborn
+- XGBoost
+- TensorFlow/Keras (for LSTM)
+- Scikit-learn
+- PyCharm (IDE)
 
-XGBoost
+---
 
-TensorFlow/Keras (for LSTM)
+## 🚀 How to Run the Project
 
-Scikit-learn
+### 1. Clone the Repository
 
-PyCharm (IDE)
-
-🚀 How to Run the Project
-1. Clone the Repository
-bash
-Copy
-Edit
-git clone https://github.com/yourusername/Data-Driven-Salesforecasting-for-Supermart-using-XGBoost-LSTM-Model.git
+```bash
+git clone https://github.com/CSanthoshIT/Data-Driven-Salesforecasting-for-Supermart-using-XGBoost-LSTM-Model.git
 cd Data-Driven-Salesforecasting-for-Supermart-using-XGBoost-LSTM-Model
-2. Set up the Environment
-bash
-Copy
-Edit
+```
+
+### 2. Set up the Environment
+
+```bash
 pip install -r requirements.txt
-3. Run the Models
-XGBoost:
+```
 
-bash
-Copy
-Edit
+### 3. Run the Models
+
+**XGBoost:**
+
+```bash
 python src/train_xgboost.py
-LSTM:
+```
 
-bash
-Copy
-Edit
+**LSTM:**
+
+```bash
 python src/train_lstm.py
-Hybrid Forecast (if implemented):
+```
 
-bash
-Copy
-Edit
+**Hybrid Forecast (if implemented):**
+
+```bash
 python src/hybrid_forecasting.py
-📈 Evaluation Metrics
-RMSE (Root Mean Square Error)
+```
 
-MAE (Mean Absolute Error)
+---
 
-MAPE (Mean Absolute Percentage Error)
+## 📈 Evaluation Metrics
 
-Visualizations include:
+- RMSE (Root Mean Square Error)
+- MAE (Mean Absolute Error)
+- MAPE (Mean Absolute Percentage Error)
 
-Actual vs Predicted sales
+**Visualizations include:**
 
-Feature importance (XGBoost)
+- Actual vs Predicted sales
+- Feature importance (XGBoost)
+- Loss curves (LSTM training)
 
-Loss curves (LSTM training)
+---
 
-🔮 Future Work
-Hyperparameter optimization (e.g., Optuna or GridSearch)
+## 🔮 Future Work
 
-Deployment via Flask/Streamlit dashboard
+- Hyperparameter optimization (e.g., Optuna or GridSearch)
+- Deployment via Flask/Streamlit dashboard
+- Adding external data sources (weather, macroeconomics)
+- Incorporating attention mechanisms in LSTM
 
-Adding external data sources (weather, macroeconomics)
+---
 
-Incorporating attention mechanisms in LSTM
+## 🙌 Acknowledgements
 
-🙌 Acknowledgements
-Datasets: Kaggle, internal dataset
+- **Datasets:** Kaggle, internal dataset
+- **Libraries:** XGBoost, TensorFlow/Keras, Scikit-learn
 
-Libraries: XGBoost, TensorFlow/Keras, Scikit-learn
+---
 
-📬 Contact
-For questions, feel free to reach out:
+## 📬 Contact
 
-Your Name
-Email: crazyeditz2k@gmail.com
-GitHub: @CSanthoshIT
-
+**Santhosh C**  
+Email: crazyeditz2k@gmail.com  
+GitHub: [@CSanthoshIT](https://github.com/CSanthoshIT)
