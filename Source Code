@@ -1,0 +1,97 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import xgboost as xgb
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.metrics import mean_squared_error
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense
+
+# 1. Load the dataset
+df = pd.read_csv('sales.csv')  # Replace with your dataset
+df['Date'] = pd.to_datetime(df['Date'])
+df = df.sort_values('Date')
+df.set_index('Date', inplace=True)
+
+# Visualize data
+plt.figure(figsize=(12, 5))
+plt.plot(df['Sales'])
+plt.title('Supermart Sales Over Time')
+plt.xlabel('Date')
+plt.ylabel('Sales')
+plt.grid(True)
+plt.show()
+
+# 2. Feature engineering for XGBoost
+df['Month'] = df.index.month
+df['Day'] = df.index.day
+df['DayOfWeek'] = df.index.dayofweek
+df['Lag1'] = df['Sales'].shift(1)
+df['Lag7'] = df['Sales'].shift(7)
+df.dropna(inplace=True)
+
+features = ['Month', 'Day', 'DayOfWeek', 'Lag1', 'Lag7']
+target = 'Sales'
+
+# 3. Split data
+train_size = int(len(df) * 0.8)
+train_xgb = df[features][:train_size]
+train_y = df[target][:train_size]
+test_xgb = df[features][train_size:]
+test_y = df[target][train_size:]
+
+# 4. Train XGBoost
+xgb_model = xgb.XGBRegressor(n_estimators=100, learning_rate=0.1)
+xgb_model.fit(train_xgb, train_y)
+
+# Predict and save XGBoost output
+xgb_preds = xgb_model.predict(test_xgb)
+df['XGB_Pred'] = pd.Series(np.concatenate([np.full(train_size, np.nan), xgb_preds]))
+
+# 5. Prepare data for LSTM using XGB output
+scaler = MinMaxScaler()
+scaled_sales = scaler.fit_transform(df[['XGB_Pred']].fillna(method='ffill'))
+
+def create_sequences(data, seq_length=7):
+    x, y = [], []
+    for i in range(len(data) - seq_length):
+        x.append(data[i:i+seq_length])
+        y.append(data[i+seq_length])
+    return np.array(x), np.array(y)
+
+x_lstm, y_lstm = create_sequences(scaled_sales, 7)
+
+# Train/test split
+train_lstm_x = x_lstm[:train_size - 7]
+train_lstm_y = y_lstm[:train_size - 7]
+test_lstm_x = x_lstm[train_size - 7:]
+test_lstm_y = y_lstm[train_size - 7:]
+
+# 6. LSTM Model
+model = Sequential()
+model.add(LSTM(64, input_shape=(train_lstm_x.shape[1], train_lstm_x.shape[2]), return_sequences=False))
+model.add(Dense(1))
+model.compile(loss='mse', optimizer='adam')
+
+# 7. Train LSTM
+history = model.fit(train_lstm_x, train_lstm_y, epochs=20, batch_size=8, validation_split=0.1, verbose=1)
+
+# 8. Predictions and Results
+lstm_preds_scaled = model.predict(test_lstm_x)
+lstm_preds = scaler.inverse_transform(lstm_preds_scaled)
+
+# Final comparison
+real = df[target].values[train_size:]
+plt.figure(figsize=(12, 5))
+plt.plot(real, label='Actual Sales')
+plt.plot(lstm_preds, label='Predicted Sales (Hybrid)')
+plt.legend()
+plt.title('Actual vs Predicted Sales (Hybrid XGBoost-LSTM)')
+plt.xlabel('Time')
+plt.ylabel('Sales')
+plt.grid(True)
+plt.show()
+
+# Evaluate
+rmse = np.sqrt(mean_squared_error(real, lstm_preds))
+print(f"RMSE of Hybrid XGBoost-LSTM Model: {rmse:.2f}")
